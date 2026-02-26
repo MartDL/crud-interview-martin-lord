@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -9,14 +10,17 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-
-const mockUsers = [
-  { id: 1, firstName: 'John', lastName: 'Smith', dateOfBirth: '1990-05-14' },
-  { id: 2, firstName: 'Sarah', lastName: 'Johnson', dateOfBirth: '1988-11-02' },
-  { id: 3, firstName: 'Michael', lastName: 'Brown', dateOfBirth: '1995-07-21' },
-];
+import { useDeleteUser, useUsers } from '../hooks/useUsers';
 
 export default function UsersList() {
+  const { data: users, isPending, isError } = useUsers();
+  const deleteUserMutation = useDeleteUser();
+
+  if (isPending) return <CircularProgress />;
+  if (isError) return <div>Error loading users</div>;
+
+  const usersList = users ?? [];
+
   return (
     <Box
       sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}
@@ -36,15 +40,21 @@ export default function UsersList() {
           </TableHead>
 
           <TableBody>
-            {mockUsers.length ? (
-              mockUsers.map((user) => (
+            {usersList.length ? (
+              usersList.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell>{user.firstName}</TableCell>
+                  <TableCell>{user.firstName ?? ''}</TableCell>
                   <TableCell>{user.lastName}</TableCell>
-                  <TableCell>{user.dateOfBirth}</TableCell>
+                  <TableCell>{user.dateOfBirth ?? ''}</TableCell>
                   <TableCell>
                     <Button size="small">Edit</Button>
-                    <Button size="small" color="error">
+
+                    <Button
+                      size="small"
+                      color="error"
+                      disabled={deleteUserMutation.isPending}
+                      onClick={() => deleteUserMutation.mutate(user.id)}
+                    >
                       Delete
                     </Button>
                   </TableCell>

@@ -13,12 +13,14 @@ interface UserFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (payload: CreateUserRequest) => void;
+  isSubmitting?: boolean;
 }
 
 export default function UserFormDialog({
   isOpen,
   onClose,
   onSubmit,
+  isSubmitting = false,
 }: UserFormDialogProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -32,7 +34,6 @@ export default function UserFormDialog({
     };
 
     onSubmit(payload);
-    onClose();
   };
 
   return (
@@ -46,6 +47,7 @@ export default function UserFormDialog({
           label="First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          disabled={isSubmitting}
         />
 
         <TextField
@@ -53,6 +55,7 @@ export default function UserFormDialog({
           required
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          disabled={isSubmitting}
         />
 
         <TextField
@@ -61,12 +64,19 @@ export default function UserFormDialog({
           value={dateOfBirth}
           onChange={(e) => setDateOfBirth(e.target.value)}
           InputLabelProps={{ shrink: true }}
+          disabled={isSubmitting}
         />
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button onClick={onClose} disabled={isSubmitting}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          loading={isSubmitting}
+        >
           Save
         </Button>
       </DialogActions>
