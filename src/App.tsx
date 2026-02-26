@@ -1,22 +1,38 @@
-import { useState } from "react";
-import "./App.css";
+import { useState } from 'react';
+import './App.css';
+import UsersList from './features/users/components/UsersList';
+import { Box, Button } from '@mui/material';
+import UserFormDialog from './features/users/components/UserFormDialog';
+import type { CreateUserRequest } from './features/users/types/user';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [openUserFormDialog, setOpenUserFormDialog] = useState(false);
+
+  const handleCreateUser = (payload: CreateUserRequest) => {
+    console.log('Create user', payload);
+  };
 
   return (
     <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <UserFormDialog
+        isOpen={openUserFormDialog}
+        onClose={() => setOpenUserFormDialog(false)}
+        onSubmit={handleCreateUser}
+      />
+      <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            variant="contained"
+            onClick={() => setOpenUserFormDialog(true)}
+          >
+            Add User
+          </Button>
+        </Box>
+
+        <Box sx={{ flex: 1 }}>
+          <UsersList />
+        </Box>
+      </Box>
     </>
   );
 }
