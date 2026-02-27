@@ -6,14 +6,15 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
-import type { CreateUserRequest } from '../types/user';
+import { useEffect, useState } from 'react';
+import type { CreateUserRequest, User } from '../types/user';
 
 interface UserFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (payload: CreateUserRequest) => void;
   isSubmitting?: boolean;
+  user?: User | null;
 }
 
 export default function UserFormDialog({
@@ -21,10 +22,23 @@ export default function UserFormDialog({
   onClose,
   onSubmit,
   isSubmitting = false,
+  user,
 }: UserFormDialogProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName ?? '');
+      setLastName(user.lastName);
+      setDateOfBirth(user.dateOfBirth ?? '');
+    } else {
+      setFirstName('');
+      setLastName('');
+      setDateOfBirth('');
+    }
+  }, [user]);
 
   const handleSubmit = () => {
     const payload: CreateUserRequest = {
@@ -38,7 +52,7 @@ export default function UserFormDialog({
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth>
-      <DialogTitle>Create User</DialogTitle>
+      <DialogTitle>{user ? 'Edit User' : 'Create User'}</DialogTitle>
 
       <DialogContent
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}

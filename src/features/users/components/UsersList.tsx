@@ -11,8 +11,13 @@ import {
   Paper,
 } from '@mui/material';
 import { useDeleteUser, useUsers } from '../hooks/useUsers';
+import type { User } from '../types/user';
 
-export default function UsersList() {
+interface UsersListProps {
+  onEdit: (user: User) => void;
+}
+
+export default function UsersList({ onEdit }: UsersListProps) {
   const { data: users, isPending, isError } = useUsers();
   const deleteUserMutation = useDeleteUser();
 
@@ -47,7 +52,9 @@ export default function UsersList() {
                   <TableCell>{user.lastName}</TableCell>
                   <TableCell>{user.dateOfBirth ?? ''}</TableCell>
                   <TableCell>
-                    <Button size="small">Edit</Button>
+                    <Button size="small" onClick={() => onEdit(user)}>
+                      Edit
+                    </Button>
 
                     <Button
                       size="small"

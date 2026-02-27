@@ -3,27 +3,52 @@ import './App.css';
 import UsersList from './features/users/components/UsersList';
 import { Box, Button } from '@mui/material';
 import UserFormDialog from './features/users/components/UserFormDialog';
-import type { CreateUserRequest } from './features/users/types/user';
-import { useCreateUser } from './features/users/hooks/useUsers';
+import type { CreateUserRequest, User } from './features/users/types/user';
+import { useCreateUser, useUpdateUser } from './features/users/hooks/useUsers';
 
 function App() {
   const [openUserFormDialog, setOpenUserFormDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const createUserMutation = useCreateUser();
+  const updateUserMutation = useUpdateUser();
 
-  const handleCreateUser = (payload: CreateUserRequest) => {
-    createUserMutation.mutate(payload, {
-      onSuccess: () => setOpenUserFormDialog(false),
-    });
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setOpenUserFormDialog(true);
+  };
+
+  const handleSubmitUser = (payload: CreateUserRequest) => {
+    if (selectedUser) {
+      updateUserMutation.mutate(
+        { id: selectedUser.id, payload },
+        {
+          onSuccess: () => {
+            setOpenUserFormDialog(false);
+            setSelectedUser(null);
+          },
+        },
+      );
+    } else {
+      createUserMutation.mutate(payload, {
+        onSuccess: () => setOpenUserFormDialog(false),
+      });
+    }
   };
 
   return (
     <>
       <UserFormDialog
         isOpen={openUserFormDialog}
-        onClose={() => setOpenUserFormDialog(false)}
-        onSubmit={handleCreateUser}
-        isSubmitting={createUserMutation.isPending}
+        onClose={() => {
+          setOpenUserFormDialog(false);
+          setSelectedUser(null);
+        }}
+        onSubmit={handleSubmitUser}
+        user={selectedUser}
+        isSubmitting={
+          createUserMutation.isPending || updateUserMutation.isPending
+        }
       />
 
       <Box display="flex" flexDirection="column" gap={2}>
@@ -37,7 +62,7 @@ function App() {
         </Box>
 
         <Box sx={{ flex: 1 }}>
-          <UsersList />
+          <UsersList onEdit={handleEditUser} />
         </Box>
       </Box>
     </>

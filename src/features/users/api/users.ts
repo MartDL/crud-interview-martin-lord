@@ -38,15 +38,24 @@ export async function createUser(payload: CreateUserRequest): Promise<User> {
 export async function updateUser(
   id: EntityId,
   payload: UpdateUserRequest,
-): Promise<User> {
-  return request<User>(`${BASE_URL}/user/${id}`, {
+): Promise<void> {
+  const res = await fetch(`${BASE_URL}/user/${id}`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
+
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status}`);
+  }
 }
 
 export async function deleteUser(id: EntityId): Promise<void> {
-  await request(`${BASE_URL}/user/${id}`, {
+  const res = await fetch(`${BASE_URL}/user/${id}`, {
     method: 'DELETE',
   });
+
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status}`);
+  }
 }
