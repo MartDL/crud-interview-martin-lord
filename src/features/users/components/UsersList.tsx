@@ -13,6 +13,7 @@ import {
 import { useState } from 'react';
 import { useDeleteUser, useUsers } from '../hooks/useUsers';
 import type { User } from '../types/user';
+import { formatDateUK } from '../../../utils';
 
 interface UsersListProps {
   onEdit: (user: User) => void;
@@ -105,7 +106,7 @@ export default function UsersList({
                     <TableCell>
                       {showRowSkeletons
                         ? textSkeleton
-                        : (user.dateOfBirth ?? '-')}
+                        : formatDateUK(user.dateOfBirth)}
                     </TableCell>
 
                     <TableCell>
