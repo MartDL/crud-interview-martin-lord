@@ -19,13 +19,12 @@ export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateUserRequest) => createUser(payload),
+    mutationFn: createUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: usersQueryKey });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 }
-
 export function useUpdateUser() {
   const queryClient = useQueryClient();
 

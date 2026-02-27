@@ -31,7 +31,10 @@ function App() {
       );
     } else {
       createUserMutation.mutate(payload, {
-        onSuccess: () => setOpenUserFormDialog(false),
+        onSuccess: () => {
+          setOpenUserFormDialog(false);
+          setSelectedUser(null);
+        },
       });
     }
   };

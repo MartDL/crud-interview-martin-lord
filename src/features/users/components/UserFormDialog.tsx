@@ -117,7 +117,7 @@ export default function UserFormDialog({
       disableEscapeKeyDown={isSubmitting}
       fullWidth
     >
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleFormSubmit} noValidate>
         <DialogTitle>{user ? 'Edit User' : 'Create User'}</DialogTitle>
 
         <DialogContent
