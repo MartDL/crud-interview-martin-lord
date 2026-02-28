@@ -3,7 +3,7 @@ export type EntityId = string | number;
 export type UserFields = {
   firstName?: string;
   lastName: string;
-  dateOfBirth?: string;
+  dateOfBirth: string;
 };
 
 export type User = UserFields & { id: EntityId };
