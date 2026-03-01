@@ -1,10 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getUsers, createUser, updateUser, deleteUser } from '../api/users';
-import type {
-  CreateUserRequest,
-  UpdateUserRequest,
-  EntityId,
-} from '../types/user';
+import type { UpdateUserRequest, EntityId } from '../types/user';
 
 export const usersQueryKey = ['users'];
 

@@ -95,7 +95,7 @@ export default function UserFormDialog({
     onSubmit({
       firstName: form.firstName?.trim() || undefined,
       lastName: form.lastName.trim(),
-      dateOfBirth: form.dateOfBirth || undefined,
+      dateOfBirth: form.dateOfBirth,
     });
   };
 
