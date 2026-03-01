@@ -9,7 +9,7 @@ The application allows a User Admin to:
 - Edit users
 - Delete users
 
-The backend API is mocked using **Mock Service Worker (MSW)** so the application can run without a real backend service.
+The project focuses on demonstrating **clean component architecture, API abstraction, validation, and unit testing**.
 
 ---
 
@@ -108,15 +108,12 @@ Coverage results will be generated in the `/coverage` directory.
 
 Available endpoints:
 
-```
-GET    https://example.com/user
-GET    https://example.com/user/:id
-POST   https://example.com/user
-PUT    https://example.com/user/:id
+GET https://example.com/user  
+POST https://example.com/user  
+PUT https://example.com/user/:id  
 DELETE https://example.com/user/:id
-```
 
----
+API requests are handled through a small request utility and consumed through custom React Query hooks
 
 # Features Implemented
 
@@ -136,13 +133,3 @@ DELETE https://example.com/user/:id
 # Author
 
 Martin Lord
-
-Endpoints used to retrieve/manipulate mocked data are implemented using MSW library (https://mswjs.io/) and MSW data (https://github.com/mswjs/data).
-
-## List of available BFF endpoints:
-
-GET - https://example.com/user - Retrieve all available users  
-GET - https://example.com/user/:id - Retrieve user with a certain id  
-POST - https://example.com/user - Create a new user. Provide first name  
-PUT - https://example.com/user/:id - Edit a user. Provide first name  
-DELETE - https://example.com/user/:id - Delete a user
